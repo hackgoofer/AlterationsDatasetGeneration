@@ -1,43 +1,106 @@
+var started = false;
+
+var params;
+
+document.addEventListener("DOMContentLoaded", () => {
+    params = randomize_params()
+    params["verticalSize"] = 0.25
+    params["name"] = "_A"
+    started = true;
+});
+
+function randomize_params() {
+    var static = static_params();
+    var dynamic = dynamic_params();
+    const seed =  Math.random();
+    Math.seedrandom(seed);
+    const params = {"seed": seed}
+    var gridWidth = undefined;
+    var gridHeight = undefined;
+    Object.keys(dynamic).map(name => {
+        const min = dynamic[name][0]
+        const max = dynamic[name][1]
+        const step = dynamic[name][2]
+        const rand = random_number(min, max, step)
+        params[name] = rand
+        if (name == "numColumns") gridWidth = rand
+        if (name == "numRows") gridHeight = rand
+    });
+    console.assert(gridWidth != undefined && gridHeight != undefined)
+    const dependent = dependent_params(gridWidth, gridHeight);
+    Object.keys(dependent).map(name => {
+        params[name] = [...Array(dependent[name])].map(() => Math.random());
+    })
+    return params
+}
+
+function static_params() {
+    return {'verticalSize': [0.01, 1, 0.01]}
+}
+
+function dynamic_params() {
+    return {
+        // take the form of alteration_name: [min, max, optional_step]
+        "palette": [0, 12, 1],
+        "numColumns": [1, 50, 1],
+        "numRows": [1, 50, 1],
+        "gridNoise": [0, 1, 0.05],
+        "offsetLeft": [-1, 1, 0.05],
+        "offsetRight": [-1, 1, 0.05],
+        "drop": [0, 0.95, 0.05],
+        "edgeColor": [0, 4, 1],
+        "strokeWidth": [0, 6, 0.2],
+        "cid": [0, 1, 0.1]
+    }
+}
+
+function dependent_params(width, height) {
+    return {
+        "mux": width*height,
+        "muy": width*height,
+        "check": width*height,
+        "check_drop": width*height,
+        "cids": width*height,
+        "muy2": width*height,
+        "mux_w": width,
+        "muy_w": width
+    }
+}
+
+function download() {
+    var download = document.getElementById("download");
+    var image = document.getElementById("mycanvas").toDataURL("image/png");
+    download.download = `pid${params.palette}_nc${params.numColumns}_nr${params.numRows}_gn${params.gridNoise}_ol${params.offsetLeft}_or${params.offsetRight}_drop${params.drop}_ec${params.edgeColor}_sw${params.strokeWidth}_cid${params.cid}${params.name}`
+    download.setAttribute("href", image);
+    download.click()
+};
+
+
 function setup() {
-    var or = 0.7*Number(document.getElementById("offsetRight").value);
-    var ol = 0.7*Number(document.getElementById("offsetLeft").value);
+    if (!started) return
+    console.log(`Setup Called for param ${params.name}, started: ${started}`)
 
-    var drop = Number(document.getElementById("drop").value);
+    var or = 0.7*Number(params.offsetRight);
+    var ol = 0.7*Number(params.offsetLeft);
+    var drop = Number(params.drop);
+    var sw = Number(params.strokeWidth);
 
-    // or = 110;
-    // ol = -70;
-    // or and ol can be negative. So set range appropriately. Say -300 to 300
+    var grid_height = Number(params.numRows);
+    var grid_width = Number(params.numColumns);
 
-    //var XD = 0; // XD should always be 0!
-    //var YD = Number(document.getElementById("verticalSize").value);
-    // YD should always be positive. So set range appropriately. Say 0 to 300.
-
-    var sw = Number(document.getElementById("strokeWidth").value);
-    //sw = 0.5;
-
-    //var numTrials = Math.pow(2, document.getElementById("numEntities").value);
-
-    var grid_height = Number(document.getElementById("numRows").value);
-    var grid_width = Number(document.getElementById("numColumns").value);
-
-    var leaf_height = 0.7*Number(document.getElementById("verticalSize").value);
-    var grid_noise = Number(document.getElementById("gridNoise").value);
+    var leaf_height = 0.7*Number(params.verticalSize);
+    var grid_noise = Number(params.gridNoise);
 
     var mp = 0.2; // percentage on each side to use as margin
     var curvy = 0.5;
     var A = 255;
 
+    var pid = Number(params.palette)
+    var eid = Number(params.edgeColor)
 
-    var pid = $("input[name='palette']:checked").val();
-    var eid = $("input[name='edgeColor']:checked").val();
+    var seed = Number(params.seed)
 
-    var url_string = window.location.href;
-    var url = new URL(url_string);
-    var seed = url.searchParams.get("seed");
-
-    Math.seedrandom(seed);
-
-    sy = min(700, screen.width);
+    sy = Math.min(700, screen.width);
     sx = sy; //sy*0.8;
     pixelDensity(2);
 
@@ -100,36 +163,6 @@ function setup() {
     ecolors[3] = [30, 27, 39];
     ecolors[4] = [0, 0, 0];
 
-    // let background = [];
-    // background[0] = [246, 244, 240];
-    // background[1] = [246, 244, 240];
-    // background[2] = [246, 244, 240];
-    // background[3] = [244, 239, 220];
-    // background[4] = [246, 244, 240];
-    // background[5] = [0, 0, 0];
-    // background[6] = [30, 27, 39];
-    // background[7] = [255, 255, 255];
-    // background[8] = background[7];
-    // background[9] = background[7];
-    // background[10] = background[7];
-    // background[11] = background[7];
-    // background[12] = background[7];
-
-    // let black = [];
-    // black[0] = background[0];
-    // black[1] = background[1];
-    // black[2] = background[2];
-    // black[3] = background[3];
-    // black[4] = [52, 50, 46];
-    // black[5] = background[5];
-    // black[6] = background[6];
-    // black[7] = background[7];
-    // black[8] = background[8];
-    // black[9] = background[9];
-    // black[10] = background[10];
-    // black[11] = background[11];
-    // black[12] = background[12];
-
     numColors = palettes[pid].length;
 
     let cnv = createCanvas(sx, sy);
@@ -137,15 +170,13 @@ function setup() {
     noStroke();
     rect(0, 0, sx, sy);
     cnv.id('mycanvas');
-
     cnv.parent('sketch-holder');
-
 
     strokeWeight(sw)
     stroke(ecolors[eid]);
 
     beginShape();
-    cid = round(Math.random() * (numColors - 1));
+    cid = round(params.cid * (numColors-1)) // round(Math.random() * (numColors - 1));
     if (pid < 7) {
         R = palettes[pid][cid][0]; //round(Math.random() * 255);
         G = palettes[pid][cid][1]; //round(Math.random() * 255);
@@ -175,7 +206,6 @@ function setup() {
     mxy = sy - mny;
 
     for (var xtrial = 0; xtrial < grid_width; xtrial++) {
-
         for (var ytrial = 0; ytrial < grid_height; ytrial++) {
 
             //A = Math.round((numTrials - trial)/numTrials*255);
@@ -190,9 +220,9 @@ function setup() {
             // pprev = [x,y];
 
 
-            mux = Math.random()*(mxx-mnx)+mnx;
+            mux = params.mux[xtrial*grid_height+ytrial]*(mxx-mnx)+mnx;
             x = (1-grid_noise)*xclean + grid_noise*(mux);
-            muy = Math.random()*(mxy-mny)+mny;
+            muy = params.muy[xtrial*grid_height+ytrial]*(mxy-mny)+mny;
             y = (1-grid_noise)*yclean + grid_noise*(muy);
             pprev = [x,y - sy*leaf_height/2];
 
@@ -206,7 +236,7 @@ function setup() {
             let cp1 = [];
             let cp2 = [];
 
-            check = Math.random();
+            check = params.check[xtrial*grid_height+ytrial];
             if (check < 0.5) {
                 cp1[0] = (p[0] + pprev[0]) / 2 + ol*sx;
                 cp1[1] = (p[1] + pprev[1]) / 2;
@@ -221,7 +251,7 @@ function setup() {
 
             //cp = [round(Math.random() * s), round(Math.random() * s)];
 
-            if (Math.random() > drop) {
+            if (params.check_drop[xtrial*grid_height+ytrial] > drop) {
                 quadraticVertex(cp1[0], cp1[1], p[0], p[1]);
                 quadraticVertex(cp2[0], cp2[1], pprev[0], pprev[1]);
             }
@@ -241,7 +271,7 @@ function setup() {
 
 
             beginShape();
-            cid = round(Math.random() * (numColors - 1));
+            cid = round(params.cids[xtrial*grid_height+ytrial] * (numColors - 1));
             if (pid < 7) {
                 R = palettes[pid][cid][0]; //round(Math.random() * 255);
                 G = palettes[pid][cid][1]; //round(Math.random() * 255);
@@ -254,17 +284,18 @@ function setup() {
             yclean = yclean + yinc;
             // muy = Math.random()*(sy*(1-2*mp)-(yinc*leaf_height)) + (sy*mp);
             // y = (1-grid_noise)*yclean + grid_noise*(muy);
-            muy = Math.random()*(mxy-mny)+mny;
+            muy = params.muy2[xtrial*grid_height+ytrial]*(mxy-mny)+mny;
             y = (1-grid_noise)*yclean + grid_noise*(muy);
             pprev = [x,y - sy*leaf_height/2];
         }
         xclean = xclean + xinc;
         yclean = ystart;//*(1-leaf_height)/2;
 
-        mux = Math.random()*(mxx-mnx)+mnx;
+        mux = params.mux_w[xtrial]*(mxx-mnx)+mnx;
         x = (1-grid_noise)*xclean + grid_noise*(mux);
-        muy = Math.random()*(mxy-mny)+mny;
+        muy = params.muy_w[xtrial]*(mxy-mny)+mny;
         y = (1-grid_noise)*yclean + grid_noise*(muy);
         pprev = [x,y - sy*leaf_height/2];
     }
+    download()
 }

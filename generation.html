@@ -1,0 +1,33 @@
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="generation.js"></script>
+        <link href="canvas.css" rel="stylesheet" type="text/css">
+    </head>
+    <body>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/p5.js"></script>
+        <div id="div1" class="col-sm-1" style="float: left;">
+            <h1> Tool: Leaves JS </h1>
+            <label for="tools">Choose a tool:</label>
+            <select name="tools" id="tools">
+            <option value="leaves">leaves</option>
+            <option value="streams">streams</option>
+            <option value="strokes">strokes</option>
+            <option value="spractal">spractal</option>
+            <option value="carpet">carpet</option>
+            <option value="circle_packing">circle_packing</option>
+            <option value="tiles_cushions">tiles_cushions</option>
+            </select>
+            <br><br>
+            <button type="button" onclick="start()">Start</button>
+            <div id="sketch-holder" class="col-sm-1" style="float: left;">
+                <script src="leaves.js"></script>
+            </div>
+            <a id="download" download="pide_3n_eide_3n_gne_0d_1n_nce_10n_nre_10n_de_0d_2n_swe_0n_ole_-0d_1n_ore_0d_2n_vse_0d_25n_seede_0d_949991024587542.png" target="_blank">
+                <button type="button" onclick="download()">Download</button>
+            </a>
+        </div>
+    </body>
+</html>

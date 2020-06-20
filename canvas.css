@@ -1,0 +1,67 @@
+* {
+font-family: helvetica;
+}
+#sketch-holder {
+  width:60%;
+  text-align: center;
+  margin-left: 0px;
+}
+.twitter-share-button[style] { vertical-align: text-bottom !important;}
+/*iframe { float: right; padding-left: 5px; padding-right: 10px; padding-top: 5px; vertical-align: text-center}*/
+div {
+margin: 0px 40px 0px 40px;
+}
+input[type="radio"]{
+  margin: 0 0px 0 0px;
+}
+canvas {
+margin-top: 20px;
+box-shadow: 0 5px 15px 0 rgba(0,0,0, 0.2);
+border-radius: 2px;
+}
+button {
+background-color: #0097e6;
+border: none;
+color: white;
+padding: 10px 10px;
+font-size: 16px;
+margin: 0px 0px;
+}
+.slidecontainer {
+  width: 100%; /* Width of the outside container */
+}
+/* The slider itself */
+.slider {
+  -webkit-appearance: none;  /* Override default CSS styles */
+  appearance: none;
+  width: 125px;
+  height: 7px; /* Specified height */
+  background: #d3d3d3; /* Grey background */
+  outline: none; /* Remove outline */
+  opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
+  -webkit-transition: .1s; /* 0.2 seconds transition on hover */
+  transition: opacity .1s;
+}
+
+/* Mouse-over effects */
+.slider:hover {
+  opacity: 1; /* Fully shown on mouse-over */
+}
+
+/* Remove the following makes things look different on other browsers (and so iPhone). So let these stay.
+/* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none; /* Override default look */
+  appearance: none;
+  width: 25px; /* Set a specific slider handle width */
+  height: 25px; /* Slider handle height */
+  background: #0097e6;
+  cursor: pointer; /* Cursor on hover */
+}
+
+.slider::-moz-range-thumb {
+  width: 25px; /* Set a specific slider handle width */
+  height: 25px; /* Slider handle height */
+  background: #0097e6;
+  cursor: pointer; /* Cursor on hover */
+}
