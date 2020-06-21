@@ -21,6 +21,18 @@ function random_number(min, max, step) {
     return Number(rand.toFixed(2));
 }
 
+function switch_imports(prev, next) {
+    if (prev != 0) {
+        var se = document.getElementById("scr");
+        se.parentNode.removeChild(se);
+    }
+
+    var scriptElement = document.createElement( "script" );
+    scriptElement.src = `{next}.js`;
+    scriptElement.id = "scr"
+    document.getElementById("sketch-holder").appendChild(scriptElement);
+}
+
 
 function generate() {
     var url_string = window.location.href;

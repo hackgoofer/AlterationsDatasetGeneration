@@ -86,23 +86,6 @@ def get_params_spractal(ol, name_val):
     }
 
     chance = params["rc"]
-
-    num_trials = 9000
-    params["fff"] = [random.random() for _ in range(num_trials)]
-    params["f1"] = [random.random() for _ in range(num_trials)]
-    params["f2"] = [random.random() for _ in range(num_trials)]
-    params["f3"] = [random.random() for _ in range(num_trials)]
-    params["f4"] = [random.random() for _ in range(num_trials)]
-
-    params["f11"] = [random.random() for _ in range(num_trials)]
-    params["f22"] = [random.random() for _ in range(num_trials)]
-    params["f33"] = [random.random() for _ in range(num_trials)]
-    params["f44"] = [random.random() for _ in range(num_trials)]
-
-    params["f111"] = [random.random() for _ in range(num_trials)]
-    params["f222"] = [random.random() for _ in range(num_trials)]
-    params["f333"] = [random.random() for _ in range(num_trials)]
-    params["f444"] = [random.random() for _ in range(num_trials)]
     return params
 
 
@@ -199,6 +182,7 @@ def dependent_params_leaves(width, height):
     }
 
 
+
 driver = webdriver.Chrome("/Users/sash/local/chromedriver")
 driver.get("localhost:8000/generation.html")
 time.sleep(2)
@@ -292,18 +276,18 @@ num_rounds = 10
 #     print(f"Done Carpet round {i} of {num_rounds}")
 
 # Circle Packing
-for i in range(num_rounds):
-    params = get_params_circlepacking(1, "_A")
-    params_str = json.dumps(params)
-    driver.execute_script(f"start({params_str})")
-    time.sleep(2)
-    driver.refresh()
-    time.sleep(2)
+# for i in range(num_rounds):
+#     params = get_params_circlepacking(1, "_A")
+#     params_str = json.dumps(params)
+#     driver.execute_script(f"start({params_str})")
+#     time.sleep(2)
+#     driver.refresh()
+#     time.sleep(2)
 
-    params["pid"] = 4
-    params["name"] = "_B"
-    params_str = json.dumps(params)
-    driver.execute_script(f"start({params_str})")
-    time.sleep(5)
-    driver.refresh()
-    print(f"Done Circle Packing round {i} of {num_rounds}")
+#     params["pid"] = 4
+#     params["name"] = "_B"
+#     params_str = json.dumps(params)
+#     driver.execute_script(f"start({params_str})")
+#     time.sleep(5)
+#     driver.refresh()
+#     print(f"Done Circle Packing round {i} of {num_rounds}")
