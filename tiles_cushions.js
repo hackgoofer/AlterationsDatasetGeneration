@@ -10,7 +10,7 @@ function start(a_params) {
 function download() {
     var download = document.getElementById("download");
     var image = document.getElementById("mycanvas").toDataURL("image/png");
-    download.download = `ng${params.ng}_rth${params.rth}_seed${params.seed}_sw${params.sw}_pid${params.pid}_dl${params.dl}_c${params.curvy}${params.name}.png`
+    download.download = `tnc_ng${params.ng}_rth${params.rth}_seed${params.seed}_sw${params.sw}_pid${params.pid}_dl${params.dl}_c${params.curvy}${params.name}.png`
     download.setAttribute("href", image);
     download.click()
 };

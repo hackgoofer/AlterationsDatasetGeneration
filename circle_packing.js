@@ -1,3 +1,20 @@
+var params;
+var started = false;
+function start(a_params) {
+    params = a_params
+    started = true;
+    console.log("again")
+    setup()
+}
+
+function download() {
+    var download = document.getElementById("download");
+    var image = document.getElementById("mycanvas").toDataURL("image/png");
+    download.download = `nc${params.nc}_seed${params.seed}_pid${params.pid}${params.name}.png`
+    download.setAttribute("href", image);
+    download.click()
+};
+
 // Parameters:
 // Color palette (palette ID)
 // Which colors from the palette (if not all)
@@ -8,15 +25,16 @@
 // Global scale of all circles (scale below) -- size proportions stay the same.
 function setup() {
 //function setup(seed) {
+    if (!started) return
 
-    var inputNumColors = document.getElementById("numColorsSlider").value;
-    var inputPaletteID = $("input[name='palette']:checked").val();
+    var inputNumColors = params.nc
+    var inputPaletteID = params.pid
 
-    var url_string = window.location.href;
-    var url = new URL(url_string);
+    // var url_string = window.location.href;
+    // var url = new URL(url_string);
     //var pid = url.searchParams.get("pid");
     //var n = url.searchParams.get("n");
-    var seed = url.searchParams.get("seed");
+    var seed = params.seed
 
     //document.getElementsByClassName("twitter-share-button")[0].outerHTML = "<iframe id=\"twitter-widget-0\" scrolling=\"no\" allowtransparency=\"true\" class=\"twitter-share-button twitter-share-button-rendered twitter-tweet-button\" style=\"position: static; visibility: visible; width: 61px; height: 20px;\" title=\"Twitter Tweet Button\" src=\"https://platform.twitter.com/widgets/tweet_button.d6364fae9340b0be5f13818370141fd0.en.html#dnt=false&amp;id=twitter-widget-0&amp;lang=en&amp;original_referer="+encodeURI(window.location.href)+"&amp;size=m&amp;text=Check%20this%20out&amp;time=1569167647479&amp;type=share&amp;url="+encodeURI(window.location.href)+"\" frameborder=\"0\"></iframe>";
 
@@ -199,4 +217,5 @@ function setup() {
         rect(0,Math.round(s-s*mp),s,Math.round(s-s*mp));
         rect(Math.round(s-s*mp),0,Math.round(s-s*mp),s);
     };
+    download()
 }

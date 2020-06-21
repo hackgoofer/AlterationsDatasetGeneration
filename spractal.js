@@ -16,7 +16,7 @@ function start(a_params) {
 function download() {
     var download = document.getElementById("download");
     var image = document.getElementById("mycanvas").toDataURL("image/png");
-    download.download = `rc${params.rc}_dt${params.droptiny}_dl${params.droplarge}_dr${params.droprest}_nu${params.nu}_fci${params.fci}_eci${params.eci}_ew${params.ew}_seed${params.seed}_ol${params.overlap}${params.name}.png`
+    download.download = `spractal_rc${params.rc}_dt${params.droptiny}_dl${params.droplarge}_dr${params.droprest}_nu${params.nu}_fci${params.fci}_eci${params.eci}_ew${params.ew}_seed${params.seed}_ol${params.overlap}${params.name}.png`
     download.setAttribute("href", image);
     download.click()
 };
@@ -35,7 +35,6 @@ function setup() {
     var edge_width = params.ew
 
     var seed = params.seed
-
     Math.seedrandom(seed);
     if (fcolor_ind == -1) {
         fcolor = 'none'

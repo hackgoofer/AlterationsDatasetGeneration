@@ -9,7 +9,7 @@ function start(a_params) {
 function download() {
     var download = document.getElementById("download");
     var image = document.getElementById("mycanvas").toDataURL("image/png");
-    download.download = `nt${params.numTrials}_pid${params.pid}_seed${params.seed}_cid${params.cid}_p0${params.p0}_p1${params.p1}_sw${params.strokeWidth}${params.name}.png`
+    download.download = `strokes_nt${params.numTrials}_pid${params.pid}_seed${params.seed}_cid${params.cid}_p0${params.p0}_p1${params.p1}_sw${params.strokeWidth}${params.name}.png`
     download.setAttribute("href", image);
     download.click()
 };

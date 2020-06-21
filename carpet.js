@@ -3,13 +3,14 @@ var started = false;
 function start(a_params) {
     params = a_params
     started = true;
+    console.log("again")
     setup()
 }
 
 function download() {
     var download = document.getElementById("download");
     var image = document.getElementById("mycanvas").toDataURL("image/png");
-    download.download = `ng${params.ng}_sw${params.sw}_pid${params.pid}_sce${params.sce}_seed${params.seed}_nl${params.nl}${params.name}.png`
+    download.download = `carpet_ng${params.ng}_sw${params.sw}_pid${params.pid}_sce${params.sce}_seed${params.seed}_nl${params.nl}${params.name}.png`
     download.setAttribute("href", image);
     download.click()
 };
@@ -23,6 +24,7 @@ function download() {
 // self_colored_edge Name: Self-colored edges; toggle 0 or 1. Default: 1
 
 function setup() {
+    if (!started) return
 
     //let t0 = performance.now();
     //for (var trial = 0; trial < 10; trial++) {
@@ -101,11 +103,13 @@ function setup() {
     numColors = palettes[pid].length;
 
     lcid = round(Math.random() * (numColors - 1)); // largest component (background) color ID
+    console.log(lcid)
 
     let cnv = createCanvas(s, s);
     cnv.id('mycanvas');
     cnv.parent('sketch-holder');
     th = Math.round((s*(1-2*mp)) / num_grid);
+    console.log(th)
 
 
     pixelDensity(2); // Always use even number for pixel density. Odd numbers changes the pattern a bit. Probably because thresholds below (e.g., in "if (((pixels[i + 3] > 128))) {") don't work out the same way. Some for floating point density values.

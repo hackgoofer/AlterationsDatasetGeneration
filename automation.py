@@ -15,26 +15,32 @@ def random_number(mmin, mmax, step):
     rand += mmin
     return float("{:.2f}".format(rand))
 
-
-def get_params_tnc(nl, name_val):
+def get_params_circlepacking(pid, name_val):
     seed = random.randint(0, 10000000)
     random.seed(seed)
     params = {
         "seed": seed,
-        "ng": random_number(1, 60, 1),
-        "rth": random_number(0, 1, 0.1),
-        "sw": random_number(1, 7, 1),
-        "pid": random_number(0, 4, 1),
-        "dl": random_number(0, 1, 1),
-        "curvy": c,
+        "nc": random_number(1, 5, 1),
+        "pid": pid,
         "name": name_val,
-        "M": [random.random() for _ in range(9000)]
     }
 
-    num_grid = int(params["ng"])
-    params["ng1"] = [random.random() for _ in range(num_grid * num_grid)]
-    params["ng2"] = [random.random() for _ in range(num_grid * num_grid)]
-    params["ng3"] = [random.random() for _ in range(num_grid * num_grid)]
+    return params
+
+
+def get_params_carpet(nl, name_val):
+    seed = random.randint(0, 10000000)
+    random.seed(seed)
+    params = {
+        "seed": seed,
+        "ng": random_number(5, 60, 1),
+        "sce": random_number(0, 1, 1),
+        "sw": random_number(2, 7, 1),
+        "pid": random_number(0, 4, 1),
+        "nl": nl,
+        "name": name_val,
+    }
+
     return params
 
 
@@ -251,36 +257,53 @@ num_rounds = 10
 #     print(f"Done Spractal round {i} of {num_rounds}")
 
 # Tiles and cushions
-for i in range(num_rounds):
-    params = get_params_tnc(1, "_A")
-    params_str = json.dumps(params)
-    driver.execute_script(f"start({params_str})")
-    time.sleep(2)
-    driver.refresh()
-    time.sleep(2)
+# for i in range(num_rounds):
+#     params = get_params_tnc(1, "_A")
+#     params_str = json.dumps(params)
+#     driver.execute_script(f"start({params_str})")
+#     time.sleep(2)
+#     driver.refresh()
+#     time.sleep(2)
 
-    params["curvy"] = 0
-    params["name"] = "_B"
-    params_str = json.dumps(params)
-    driver.execute_script(f"start({params_str})")
-    time.sleep(5)
-    driver.refresh()
-    print(f"Done TNC round {i} of {num_rounds}")
+#     params["curvy"] = 0
+#     params["name"] = "_B"
+#     params_str = json.dumps(params)
+#     driver.execute_script(f"start({params_str})")
+#     time.sleep(5)
+#     driver.refresh()
+#     print(f"Done TNC round {i} of {num_rounds}")
 
 
 # Carpet
+# for i in range(num_rounds):
+#     params = get_params_carpet(3, "_A")
+#     params_str = json.dumps(params)
+#     driver.execute_script(f"start({params_str})")
+#     time.sleep(2)
+#     driver.refresh()
+#     time.sleep(2)
+
+#     params["nl"] = 4
+#     params["name"] = "_B"
+#     params_str = json.dumps(params)
+#     driver.execute_script(f"start({params_str})")
+#     time.sleep(5)
+#     driver.refresh()
+#     print(f"Done Carpet round {i} of {num_rounds}")
+
+# Circle Packing
 for i in range(num_rounds):
-    params = get_params_carpet(3, "_A")
+    params = get_params_circlepacking(1, "_A")
     params_str = json.dumps(params)
     driver.execute_script(f"start({params_str})")
     time.sleep(2)
     driver.refresh()
     time.sleep(2)
 
-    params["nl"] = 4
+    params["pid"] = 4
     params["name"] = "_B"
     params_str = json.dumps(params)
     driver.execute_script(f"start({params_str})")
     time.sleep(5)
     driver.refresh()
-    print(f"Done Carpet round {i} of {num_rounds}")
+    print(f"Done Circle Packing round {i} of {num_rounds}")
