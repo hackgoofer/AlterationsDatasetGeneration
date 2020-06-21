@@ -57,13 +57,8 @@ def get_params_tnc(c, name_val):
         "dl": random_number(0, 1, 1),
         "curvy": c,
         "name": name_val,
-        "M": [random.random() for _ in range(9000)]
     }
 
-    num_grid = int(params["ng"])
-    params["ng1"] = [random.random() for _ in range(num_grid * num_grid)]
-    params["ng2"] = [random.random() for _ in range(num_grid * num_grid)]
-    params["ng3"] = [random.random() for _ in range(num_grid * num_grid)]
     return params
 
 
@@ -103,22 +98,6 @@ def get_params_strokes(sw, name_val):
         "p1": random_number(0, 1, 0.1),
         "name": name_val,
     }
-    num_trials = int(params["numTrials"])
-
-    params["trials0"] = [random.random() for _ in range(num_trials)]
-    params["trials1"] = [random.random() for _ in range(num_trials)]
-    params["trials2"] = [random.random() for _ in range(num_trials)]
-    params["trials3"] = [random.random() for _ in range(num_trials)]
-
-    params["checks"] = [random.random() for _ in range(num_trials)]
-    params["checks1"] = [random.random() for _ in range(num_trials)]
-    params["checks2"] = [random.random() for _ in range(num_trials)]
-    params["checks3"] = [random.random() for _ in range(num_trials)]
-    params["checks4"] = [random.random() for _ in range(num_trials)]
-    params["checks5"] = [random.random() for _ in range(num_trials)]
-    params["checks6"] = [random.random() for _ in range(num_trials)]
-    params["checks7"] = [random.random() for _ in range(num_trials)]
-    params["checks8"] = [random.random() for _ in range(num_trials)]
     return params
 
 ## Leaves Code
@@ -182,13 +161,46 @@ def dependent_params_leaves(width, height):
     }
 
 
+def run_generation(script_name, fn, variable_name, val1, val2, num_rounds=10):
+    params = {}
+    driver.execute_script(f"switch_imports('{script_name}')")
+    for i in range(num_rounds):
+        params = fn(val1, "_A")
+        params_str = json.dumps(params)
+        driver.execute_script(f"start({params_str})")
+        time.sleep(2)
+        driver.refresh()
+        time.sleep(2)
+        driver.execute_script(f"switch_imports('{script_name}')")
+        time.sleep(2)
+
+        params[variable_name] = val2
+        params["name"] = "_B"
+        params_str = json.dumps(params)
+        driver.execute_script(f"start({params_str})")
+        time.sleep(2)
+        driver.refresh()
+        time.sleep(2)
+        driver.execute_script(f"switch_imports('{script_name}')")
+        time.sleep(2)
+        print(f"Done {script_name} round {i} of {num_rounds}")
+
 
 driver = webdriver.Chrome("/Users/sash/local/chromedriver")
 driver.get("localhost:8000/generation.html")
-time.sleep(2)
+time.sleep(10)
 num_rounds = 10
 
 # leaves
+# run_generation("leaves", get_params_leaves, "verticalSize", 0.25, 0.35, num_rounds)
+run_generation("strokes", get_params_strokes, "strokeWidth", 5, 10, num_rounds)
+# run_generation("spractal", get_params_spractal, "overlap", 0.8, 1, num_rounds)
+# run_generation("tiles_cushions", get_params_tnc, "curvy", 1, 0, num_rounds)
+# run_generation("carpet", get_params_carpet, "nl", 3, 4, num_rounds)
+# run_generation("circle_packing", get_params_circlepacking, "pid", 1, 4, num_rounds)
+
+# params = {}
+# driver.execute_script(f"switch_imports('leaves')")
 # for i in range(num_rounds):
 #     params = get_params_leaves(0.25, "_A")
 #     params_str = json.dumps(params)
@@ -196,17 +208,24 @@ num_rounds = 10
 #     time.sleep(2)
 #     driver.refresh()
 #     time.sleep(2)
+#     driver.execute_script(f"switch_imports('leaves')")
+#     time.sleep(2)
 
 #     params["verticalSize"] = 0.35
 #     params["name"] = "_B"
 #     params_str = json.dumps(params)
 #     driver.execute_script(f"start({params_str})")
-#     time.sleep(4)
+#     time.sleep(2)
 #     driver.refresh()
+#     time.sleep(2)
+#     driver.execute_script(f"switch_imports('leaves')")
+#     time.sleep(2)
 #     print(f"Done leaves round {i} of {num_rounds}")
 
 
 # strokes
+# params = {}
+# driver.execute_script(f"switch_imports('strokes')")
 # for i in range(num_rounds):
 #     params = get_params_strokes(5, "_A")
 #     params_str = json.dumps(params)
@@ -214,16 +233,23 @@ num_rounds = 10
 #     time.sleep(2)
 #     driver.refresh()
 #     time.sleep(2)
+#     driver.execute_script(f"switch_imports('strokes')")
+#     time.sleep(2)
 
 #     params["strokeWidth"] = 10
 #     params["name"] = "_B"
 #     params_str = json.dumps(params)
 #     driver.execute_script(f"start({params_str})")
-#     time.sleep(4)
+#     time.sleep(2)
 #     driver.refresh()
+#     time.sleep(2)
+#     driver.execute_script(f"switch_imports('strokes')")
+#     time.sleep(2)
 #     print(f"Done Strokes round {i} of {num_rounds}")
 
 # Spractal
+# params = {}
+# driver.execute_script(f"switch_imports('spractal')")
 # for i in range(num_rounds):
 #     params = get_params_spractal(0.8, "_A")
 #     params_str = json.dumps(params)
@@ -241,6 +267,7 @@ num_rounds = 10
 #     print(f"Done Spractal round {i} of {num_rounds}")
 
 # Tiles and cushions
+# driver.execute_script(f"switch_imports('tiles_cushions')")
 # for i in range(num_rounds):
 #     params = get_params_tnc(1, "_A")
 #     params_str = json.dumps(params)
@@ -259,6 +286,7 @@ num_rounds = 10
 
 
 # Carpet
+# driver.execute_script(f"switch_imports('carpet')")
 # for i in range(num_rounds):
 #     params = get_params_carpet(3, "_A")
 #     params_str = json.dumps(params)
@@ -276,6 +304,7 @@ num_rounds = 10
 #     print(f"Done Carpet round {i} of {num_rounds}")
 
 # Circle Packing
+# driver.execute_script(f"switch_imports('circle_packing')")
 # for i in range(num_rounds):
 #     params = get_params_circlepacking(1, "_A")
 #     params_str = json.dumps(params)

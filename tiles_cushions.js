@@ -149,10 +149,10 @@ function setup() {
 
         for (var yi = 0; yi < num_grid; yi++) {
 
-            if (params.ng1[xi * num_grid + yi] > rth) {
+            if (Math.random() > rth) {
                 p1 = [x, y];
                 p2 = [x + th, y + th];
-                if (params.ng2[xi * num_grid + yi] > 0.5) {
+                if (Math.random() > 0.5) {
                     cp = [(p1[0] + p2[0] - nu) / 2, (p1[1] + p2[1] + nu) / 2];
                 } else {
                     cp = [(p1[0] + p2[0] + nu) / 2, (p1[1] + p2[1] - nu) / 2];
@@ -160,7 +160,7 @@ function setup() {
             } else {
                 p1 = [x, y + th];
                 p2 = [x + th, y];
-                if (params.ng3[xi * num_grid + yi] > 0.5) {
+                if (Math.random() > 0.5) {
                     cp = [(p1[0] + p2[0] - nu) / 2, (p1[1] + p2[1] - nu) / 2];
                 } else {
                     cp = [(p1[0] + p2[0] + nu) / 2, (p1[1] + p2[1] + nu) / 2];
@@ -232,9 +232,8 @@ function setup() {
     };
 
     colorsToUse = [];
-    console.log(M)
     for (let c = 1; c <= M; c += 1) {
-        cid = round(params.M[c] * (numColors - 1));
+        cid = round(Math.random() * (numColors - 1));
         colorsToUse[c] = palettes[pid][cid];
         if (c == Lind) {
             if (drop_largest) {

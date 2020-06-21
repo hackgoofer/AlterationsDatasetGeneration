@@ -21,14 +21,14 @@ function random_number(min, max, step) {
     return Number(rand.toFixed(2));
 }
 
-function switch_imports(prev, next) {
-    if (prev != 0) {
-        var se = document.getElementById("scr");
+function switch_imports(next) {
+    var se = document.getElementById("sketch-holder").children[0]
+    if (se != undefined) {
         se.parentNode.removeChild(se);
     }
 
     var scriptElement = document.createElement( "script" );
-    scriptElement.src = `{next}.js`;
+    scriptElement.src = `${next}.js`;
     scriptElement.id = "scr"
     document.getElementById("sketch-holder").appendChild(scriptElement);
 }
