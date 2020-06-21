@@ -1,13 +1,13 @@
-function start() {
-    var tool = $('#tools').find(":selected").text();
-    $.ajax({
-        url: `${tool}.js`,
-        dataType: "script",
-        success: function() {
-            kick_off_generation()
-        }
-    });
-}
+// function start() {
+//     var tool = $('#tools').find(":selected").text();
+//     $.ajax({
+//         url: `${tool}.js`,
+//         dataType: "script",
+//         success: function() {
+//             kick_off_generation()
+//         }
+//     });
+// }
 
 function random_number(min, max, step) {
     var delta, range, rand;

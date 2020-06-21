@@ -1,13 +1,11 @@
 var started = false;
-
 var params;
 
-document.addEventListener("DOMContentLoaded", () => {
-    params = randomize_params()
-    params["verticalSize"] = 0.25
-    params["name"] = "_A"
+function start(a_params) {
+    params = a_params
     started = true;
-});
+    setup()
+}
 
 function randomize_params() {
     var static = static_params();
@@ -70,7 +68,7 @@ function dependent_params(width, height) {
 function download() {
     var download = document.getElementById("download");
     var image = document.getElementById("mycanvas").toDataURL("image/png");
-    download.download = `pid${params.palette}_nc${params.numColumns}_nr${params.numRows}_gn${params.gridNoise}_ol${params.offsetLeft}_or${params.offsetRight}_drop${params.drop}_ec${params.edgeColor}_sw${params.strokeWidth}_cid${params.cid}${params.name}`
+    download.download = `pid${params.palette}_nc${params.numColumns}_nr${params.numRows}_gn${params.gridNoise}_ol${params.offsetLeft}_or${params.offsetRight}_drop${params.drop}_ec${params.edgeColor}_sw${params.strokeWidth}_cid${params.cid}_vs${params.verticalSize}${params.name}.png`
     download.setAttribute("href", image);
     download.click()
 };
