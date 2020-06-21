@@ -10,7 +10,7 @@ function start(a_params) {
 function download() {
     var download = document.getElementById("download");
     var image = document.getElementById("mycanvas").toDataURL("image/png");
-    download.download = `nc${params.nc}_seed${params.seed}_pid${params.pid}${params.name}.png`
+    download.download = `circlepacking_nc${params.nc}_seed${params.seed}_pid${params.pid}${params.name}.png`
     download.setAttribute("href", image);
     download.click()
 };
