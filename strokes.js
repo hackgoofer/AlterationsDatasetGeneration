@@ -25,8 +25,6 @@ function setup() {
     var pid = params.pid;
     var seed = params.seed;
 
-    Math.seedrandom(seed);
-
     s = min(700,screen.width);
     //s = 700;
     mp = 0.2; // percentage on each side to use as margin

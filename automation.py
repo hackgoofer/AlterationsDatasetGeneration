@@ -15,6 +15,67 @@ def random_number(mmin, mmax, step):
     rand += mmin
     return float("{:.2f}".format(rand))
 
+
+### Tiles & Cushions
+def get_params_tnc(c, name_val):
+    seed = random.randint(0, 10000000)
+    random.seed(seed)
+    params = {
+        "seed": seed,
+        "rc": random_number(0, 1, 0.1),
+        "droptiny": random_number(0, 1, 0.1),
+        "droplarge": random_number(0, 1, 0.1),
+        "droprest": random_number(0, 1, 0.1),
+        "nu": random_number(0, 0.1, 0.01),
+        "fci": random_number(0, 11, 1),
+        "eci": random_number(0, 2, 1),
+        "ew": random_number(1, 10, 1),
+        "curve": c,
+        "name": name_val,
+    }
+
+    chance = params["rc"]
+
+
+### Spractal Code
+def get_params_spractal(ol, name_val):
+    seed = random.randint(0, 10000000)
+    random.seed(seed)
+    params = {
+        "seed": seed,
+        "rc": random_number(0, 1, 0.1),
+        "droptiny": random_number(0, 1, 0.1),
+        "droplarge": random_number(0, 1, 0.1),
+        "droprest": random_number(0, 1, 0.1),
+        "nu": random_number(0, 0.1, 0.01),
+        "fci": random_number(0, 11, 1),
+        "eci": random_number(0, 2, 1),
+        "ew": random_number(1, 10, 1),
+        "overlap": ol,
+        "name": name_val,
+    }
+
+    chance = params["rc"]
+
+    num_trials = 9000
+    params["fff"] = [random.random() for _ in range(num_trials)]
+    params["f1"] = [random.random() for _ in range(num_trials)]
+    params["f2"] = [random.random() for _ in range(num_trials)]
+    params["f3"] = [random.random() for _ in range(num_trials)]
+    params["f4"] = [random.random() for _ in range(num_trials)]
+
+    params["f11"] = [random.random() for _ in range(num_trials)]
+    params["f22"] = [random.random() for _ in range(num_trials)]
+    params["f33"] = [random.random() for _ in range(num_trials)]
+    params["f44"] = [random.random() for _ in range(num_trials)]
+
+    params["f111"] = [random.random() for _ in range(num_trials)]
+    params["f222"] = [random.random() for _ in range(num_trials)]
+    params["f333"] = [random.random() for _ in range(num_trials)]
+    params["f444"] = [random.random() for _ in range(num_trials)]
+    return params
+
+
 ## Stroke Code
 def get_params_strokes(sw, name_val):
     seed = random.randint(0, 10000000)
@@ -149,18 +210,35 @@ num_rounds = 10
 #     print(f"Done leaves round {i} of {num_rounds}")
 
 # Spractal
+# for i in range(num_rounds):
+#     params = get_params_spractal(0.8, "_A")
+#     params_str = json.dumps(params)
+#     driver.execute_script(f"start({params_str})")
+#     time.sleep(2)
+#     driver.refresh()
+#     time.sleep(2)
+
+#     params["overlap"] = 1
+#     params["name"] = "_B"
+#     params_str = json.dumps(params)
+#     driver.execute_script(f"start({params_str})")
+#     time.sleep(5)
+#     driver.refresh()
+#     print(f"Done leaves round {i} of {num_rounds}")
+
+# Tiles and cushions
 for i in range(num_rounds):
-    params = get_params_strokes(5, "_A")
+    params = get_params_tnc(1, "_A")
     params_str = json.dumps(params)
     driver.execute_script(f"start({params_str})")
     time.sleep(2)
     driver.refresh()
     time.sleep(2)
 
-    params["strokeWidth"] = 10
+    params["overlap"] = 0
     params["name"] = "_B"
     params_str = json.dumps(params)
     driver.execute_script(f"start({params_str})")
-    time.sleep(4)
+    time.sleep(5)
     driver.refresh()
     print(f"Done leaves round {i} of {num_rounds}")

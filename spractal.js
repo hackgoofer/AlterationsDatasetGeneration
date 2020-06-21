@@ -5,27 +5,38 @@
     //drop_rest = 0; // Name: Drop remaining circles; Slider: 0 to 1
     //overlap = 0.75; // Name: Overlap; Slider: 0.5 to 1.5
     //nu = 0.05; // Name: Perturbation; Slider: 0 to 0.1
+var params;
+var started = false;
+function start(a_params) {
+    params = a_params
+    started = true;
+    setup()
+}
 
+function download() {
+    var download = document.getElementById("download");
+    var image = document.getElementById("mycanvas").toDataURL("image/png");
+    download.download = `rc${params.rc}_dt${params.droptiny}_dl${params.droplarge}_dr${params.droprest}_nu${params.nu}_fci${params.fci}_eci${params.eci}_ew${params.ew}_seed${params.seed}_ol${params.overlap}${params.name}.png`
+    download.setAttribute("href", image);
+    download.click()
+};
 
 function setup() {
+    if (!started) return
 
-    var recursion = document.getElementById("recSlider").value;
-    var drop_tiny = document.getElementById("dtSlider").value;
-    var drop_large = document.getElementById("dlSlider").value;
-    var drop_rest = document.getElementById("drSlider").value;
-    var overlap = document.getElementById("ovSlider").value;
-    var nu = document.getElementById("nuSlider").value;
-    var fcolor_ind = $("input[name='palette']:checked").val();
-    var ecolor_ind = $("input[name='ecolor']:checked").val();
-    var edge_width = document.getElementById("widthSlider").value;
+    var recursion = params.rc
+    var drop_tiny = params.droptiny
+    var drop_large = params.droplarge
+    var drop_rest = params.droprest
+    var overlap = params.overlap
+    var nu = params.nu
+    var fcolor_ind = params.fci
+    var ecolor_ind = params.eci
+    var edge_width = params.ew
 
-    var url_string = window.location.href;
-    var url = new URL(url_string);
-    var seed = url.searchParams.get("seed");
+    var seed = params.seed
 
     Math.seedrandom(seed);
-
-
     if (fcolor_ind == -1) {
         fcolor = 'none'
     } else {
@@ -86,7 +97,8 @@ function setup() {
     let ys = [];
     let hs = [];
     let ws = [];
-    fractal(c, r, chance, recursion, drop_tiny, drop_large, drop_rest, overlap, nu, fcolor, ecolor, xs, ys, hs, ws);
+    let num_fractal_index = 0;
+    fractal(num_fractal_index, c, r, chance, recursion, drop_tiny, drop_large, drop_rest, overlap, nu, fcolor, ecolor, xs, ys, hs, ws, params.f1, params.f2, params.f3, params.f4, params.f11, params.f22, params.f33, params.f44, params.f111, params.f222, params.f333, params.f444, params.fff);
 
     // Draw strokes now that all filled circles have been drawn during the call to fractal. Could also draw filled circles now to make code cleaner.
 
@@ -106,7 +118,34 @@ function setup() {
         ellipse(xs[i],ys[i],hs[i],ws[i]);
     }
 
-    function fractal(c, r, chance, recursion, drop_tiny, drop_large, drop_rest, overlap, nu, fcolor, ecolor) {
+    function fractal(num_fractal_index, c, r, chance, recursion, drop_tiny, drop_large, drop_rest, overlap, nu, fcolor, ecolor, xs, ys, hs, ws, f1, f2, f3, f4, f11, f22, f33, f44, f111, f222, f333, f444, fff) {
+        // f1 = Math.random()
+        // f2 = Math.random()
+        // f3 = Math.random()
+        // f4 = Math.random()
+        // f11 = Math.random()
+        // f22 = Math.random()
+        // f33 = Math.random()
+        // f44 = Math.random()
+        // f111 = Math.random()
+        // f222 = Math.random()
+        // f333 = Math.random()
+        // f444 = Math.random()
+        // fff = Math.random()
+        // console.log("fractal")
+        // console.log(fff)
+        // console.log(f1)
+        // console.log(f2)
+        // console.log(f3)
+        // console.log(f4)
+        // console.log(f11)
+        // console.log(f22)
+        // console.log(f33)
+        // console.log(f44)
+        // console.log(f111)
+        // console.log(f222)
+        // console.log(f333)
+        // console.log(f444)
         k = overlap * 2;
 
         if (r > 32/K) {
@@ -129,20 +168,21 @@ function setup() {
             call_recursion = 1;
             draw_circle = 0;
         };
-        if (Math.random() > drop) {
+        if (fff[num_fractal_index] > drop) {
             draw_circle = 1;
         } else {
             draw_circle = 0;
         }
 
         if (call_recursion) {
-            fractal([c[0] - r / 2 + (r * (Math.random() - 0.5) * nu) + 1, c[1] - r / 2 + (r * (Math.random() - 0.5) * nu) + 1], r / 2, Math.random(), recursion, drop_tiny, drop_large, drop_rest, overlap, nu, fcolor, ecolor, xs, ys, hs, ws);;
+            num_fractal_index += 1
+            fractal(num_fractal_index, [c[0] - r / 2 + (r * (f1[num_fractal_index] - 0.5) * nu) + 1, c[1] - r / 2 + (r * (f11[num_fractal_index] - 0.5) * nu) + 1], r / 2, f111[num_fractal_index], recursion, drop_tiny, drop_large, drop_rest, overlap, nu, fcolor, ecolor, xs, ys, hs, ws, f1, f2, f3, f4, f11, f22, f33, f44, f111, f222, f333, f444, fff);;
 
-            fractal([c[0] - r / 2 + (r * (Math.random() - 0.5) * nu) + 1, c[1] + r / 2 + (r * (Math.random() - 0.5) * nu) + 1], r / 2, Math.random(), recursion, drop_tiny, drop_large, drop_rest, overlap, nu, fcolor, ecolor, xs, ys, hs, ws);
+            fractal(num_fractal_index, [c[0] - r / 2 + (r * (f2[num_fractal_index] - 0.5) * nu) + 1, c[1] + r / 2 + (r * (f22[num_fractal_index] - 0.5) * nu) + 1], r / 2, f222[num_fractal_index], recursion, drop_tiny, drop_large, drop_rest, overlap, nu, fcolor, ecolor, xs, ys, hs, ws, f1, f2, f3, f4, f11, f22, f33, f44, f111, f222, f333, f444, fff);
 
-            fractal([c[0] + r / 2 + (r * (Math.random() - 0.5) * nu) + 1, c[1] - r / 2 + (r * (Math.random() - 0.5) * nu) + 1], r / 2, Math.random(), recursion, drop_tiny, drop_large, drop_rest, overlap, nu, fcolor, ecolor, xs, ys, hs, ws);
+            fractal(num_fractal_index, [c[0] + r / 2 + (r * (f3[num_fractal_index] - 0.5) * nu) + 1, c[1] - r / 2 + (r * (f33[num_fractal_index] - 0.5) * nu) + 1], r / 2, f333[num_fractal_index], recursion, drop_tiny, drop_large, drop_rest, overlap, nu, fcolor, ecolor, xs, ys, hs, ws, f1, f2, f3, f4, f11, f22, f33, f44, f111, f222, f333, f444, fff);
 
-            fractal([c[0] + r / 2 + (r * (Math.random() - 0.5) * nu) + 1, c[1] + r / 2 + (r * (Math.random() - 0.5) * nu) + 1], r / 2, Math.random(), recursion, drop_tiny, drop_large, drop_rest, overlap, nu, fcolor, ecolor, xs, ys, hs, ws);
+            fractal(num_fractal_index, [c[0] + r / 2 + (r * (f4[num_fractal_index] - 0.5) * nu) + 1, c[1] + r / 2 + (r * (f44[num_fractal_index] - 0.5) * nu) + 1], r / 2, f444[num_fractal_index], recursion, drop_tiny, drop_large, drop_rest, overlap, nu, fcolor, ecolor, xs, ys, hs, ws, f1, f2, f3, f4, f11, f22, f33, f44, f111, f222, f333, f444, fff);
 
         } else {
             if (draw_circle) {
@@ -166,4 +206,5 @@ function setup() {
             };
         }
     };
+    download()
 }
