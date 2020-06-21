@@ -15,9 +15,37 @@ def random_number(mmin, mmax, step):
     rand += mmin
     return float("{:.2f}".format(rand))
 
-##
+## Stroke Code
+def get_params_strokes(sw, name_val):
+    seed = random.randint(0, 10000000)
+    random.seed(seed)
+    params = {
+        "seed": seed,
+        "numTrials": random_number(0, 10, 1),
+        "strokeWidth": sw,
+        "pid": random_number(0, 4, 1),
+        "cid": random_number(0, 1, 0.1),
+        "p0": random_number(0, 1, 0.1),
+        "p1": random_number(0, 1, 0.1),
+        "name": name_val,
+    }
+    num_trials = int(params["numTrials"])
 
+    params["trials0"] = [random.random() for _ in range(num_trials)]
+    params["trials1"] = [random.random() for _ in range(num_trials)]
+    params["trials2"] = [random.random() for _ in range(num_trials)]
+    params["trials3"] = [random.random() for _ in range(num_trials)]
 
+    params["checks"] = [random.random() for _ in range(num_trials)]
+    params["checks1"] = [random.random() for _ in range(num_trials)]
+    params["checks2"] = [random.random() for _ in range(num_trials)]
+    params["checks3"] = [random.random() for _ in range(num_trials)]
+    params["checks4"] = [random.random() for _ in range(num_trials)]
+    params["checks5"] = [random.random() for _ in range(num_trials)]
+    params["checks6"] = [random.random() for _ in range(num_trials)]
+    params["checks7"] = [random.random() for _ in range(num_trials)]
+    params["checks8"] = [random.random() for _ in range(num_trials)]
+    return params
 
 ## Leaves Code
 def get_params_leaves(vc, name_val):
@@ -83,18 +111,56 @@ def dependent_params_leaves(width, height):
 driver = webdriver.Chrome("/Users/sash/local/chromedriver")
 driver.get("localhost:8000/generation.html")
 time.sleep(2)
-for i in range(10):
-    params = get_params_leaves(0.25, "_A")
+num_rounds = 10
+
+# leaves
+# for i in range(num_rounds):
+#     params = get_params_leaves(0.25, "_A")
+#     params_str = json.dumps(params)
+#     driver.execute_script(f"start({params_str})")
+#     time.sleep(2)
+#     driver.refresh()
+#     time.sleep(2)
+
+#     params["verticalSize"] = 0.35
+#     params["name"] = "_B"
+#     params_str = json.dumps(params)
+#     driver.execute_script(f"start({params_str})")
+#     time.sleep(4)
+#     driver.refresh()
+#     print(f"Done leaves round {i} of {num_rounds}")
+
+
+# strokes
+# for i in range(num_rounds):
+#     params = get_params_strokes(5, "_A")
+#     params_str = json.dumps(params)
+#     driver.execute_script(f"start({params_str})")
+#     time.sleep(2)
+#     driver.refresh()
+#     time.sleep(2)
+
+#     params["strokeWidth"] = 10
+#     params["name"] = "_B"
+#     params_str = json.dumps(params)
+#     driver.execute_script(f"start({params_str})")
+#     time.sleep(4)
+#     driver.refresh()
+#     print(f"Done leaves round {i} of {num_rounds}")
+
+# Spractal
+for i in range(num_rounds):
+    params = get_params_strokes(5, "_A")
     params_str = json.dumps(params)
     driver.execute_script(f"start({params_str})")
     time.sleep(2)
     driver.refresh()
     time.sleep(2)
 
-    params["verticalSize"] = 0.35
+    params["strokeWidth"] = 10
     params["name"] = "_B"
     params_str = json.dumps(params)
     driver.execute_script(f"start({params_str})")
     time.sleep(4)
     driver.refresh()
-    print(f"Done round {i} of 10")
+    print(f"Done leaves round {i} of {num_rounds}")

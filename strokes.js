@@ -1,14 +1,29 @@
-function setup() {
+var params;
+var started = false;
+function start(a_params) {
+    params = a_params
+    started = true;
+    setup()
+}
 
-    var sw = document.getElementById("strokeWidthSlider").value;
+function download() {
+    var download = document.getElementById("download");
+    var image = document.getElementById("mycanvas").toDataURL("image/png");
+    download.download = `nt${params.numTrials}_pid${params.pid}_seed${params.seed}_cid${params.cid}_p0${params.p0}_p1${params.p1}_sw${params.strokeWidth}${params.name}.png`
+    download.setAttribute("href", image);
+    download.click()
+};
+
+
+function setup() {
+    if (!started) return
+
+    var sw = params.strokeWidth;
     var curveToggle = $("input[name='curvy']:checked").val();
     //var rth = 1 - document.getElementById("shapeSwitchSlider").value;
-    var numTrials = Math.pow(2, document.getElementById("numEntitiesSlider").value);
-    var pid = $("input[name='palette']:checked").val();
-
-    var url_string = window.location.href;
-    var url = new URL(url_string);
-    var seed = url.searchParams.get("seed");
+    var numTrials = Math.pow(2, params.numTrials);
+    var pid = params.pid;
+    var seed = params.seed;
 
     Math.seedrandom(seed);
 
@@ -84,38 +99,38 @@ function setup() {
     stroke(black[pid]);
 
     beginShape();
-    cid = round(Math.random() * (numColors - 1));
+    cid = round(params.cid * (numColors - 1));
     R = palettes[pid][cid][0]; //round(Math.random() * 255);
     G = palettes[pid][cid][1]; //round(Math.random() * 255);
     B = palettes[pid][cid][2]; //round(Math.random() * 255);
     fill(R, G, B);
-    p = [round(Math.random() * s * (1 - 2 * mp)) + mp * s, round(Math.random() * s * (1 - 2 * mp)) + mp * s];
+    p = [round(params.p0 * s * (1 - 2 * mp)) + mp * s, round(params.p1 * s * (1 - 2 * mp)) + mp * s];
     vertex(p[0], p[1]);
     let cp = [];
     for (var trial = 0; trial < numTrials; trial++) {
 
         let pprev = p;
 
-        p = [round(Math.random() * s * (1 - 2 * mp)) + mp * s, round(Math.random() * s * (1 - 2 * mp)) + mp * s];
+        p = [round(params.trials0[trial] * s * (1 - 2 * mp)) + mp * s, round(params.trials1[trial] * s * (1 - 2 * mp)) + mp * s];
         if (curvy == 0) {
             cp[0] = (p[0] + pprev[0]) / 2;
             cp[1] = (p[1] + pprev[1]) / 2;
         } else {
-            let check = Math.random();
+            let check = params.checks[trial];
             if (check < 0.25) {
-                cp[0] = (p[0] + pprev[0]) / 2 + ((Math.random() * s / 10) + ((curvy + 1) * s / 10));
-                cp[1] = (p[1] + pprev[1]) / 2 + ((Math.random() * s / 10) + ((curvy + 1) * s / 10));
+                cp[0] = (p[0] + pprev[0]) / 2 + ((params.checks1[trial] * s / 10) + ((curvy + 1) * s / 10));
+                cp[1] = (p[1] + pprev[1]) / 2 + ((params.checks2[trial] * s / 10) + ((curvy + 1) * s / 10));
             } else {
                 if (check < 0.5) {
-                    cp[0] = (p[0] + pprev[0]) / 2 + ((Math.random() * s / 10) + ((curvy + 1) * s / 10));
-                    cp[1] = (p[1] + pprev[1]) / 2 - ((Math.random() * s / 10) + ((curvy + 1) * s / 10));
+                    cp[0] = (p[0] + pprev[0]) / 2 + ((params.checks3[trial] * s / 10) + ((curvy + 1) * s / 10));
+                    cp[1] = (p[1] + pprev[1]) / 2 - ((params.checks4[trial] * s / 10) + ((curvy + 1) * s / 10));
                 } else {
                     if (check < 0.75) {
-                        cp[0] = (p[0] + pprev[0]) / 2 - ((Math.random() * s / 10) + ((curvy + 1) * s / 10));
-                        cp[1] = (p[1] + pprev[1]) / 2 + ((Math.random() * s / 10) + ((curvy + 1) * s / 10));
+                        cp[0] = (p[0] + pprev[0]) / 2 - ((params.checks5[trial] * s / 10) + ((curvy + 1) * s / 10));
+                        cp[1] = (p[1] + pprev[1]) / 2 + ((params.checks6[trial] * s / 10) + ((curvy + 1) * s / 10));
                     } else {
-                        cp[0] = (p[0] + pprev[0]) / 2 - ((Math.random() * s / 10) + ((curvy + 1) * s / 10));
-                        cp[1] = (p[1] + pprev[1]) / 2 - ((Math.random() * s / 10) + ((curvy + 1) * s / 10));
+                        cp[0] = (p[0] + pprev[0]) / 2 - ((params.checks7[trial] * s / 10) + ((curvy + 1) * s / 10));
+                        cp[1] = (p[1] + pprev[1]) / 2 - ((params.checks8[trial] * s / 10) + ((curvy + 1) * s / 10));
                     }
                 }
             }
@@ -126,11 +141,11 @@ function setup() {
 
         quadraticVertex(cp[0], cp[1], p[0], p[1]);
 
-        if (Math.random() > rth) {
+        if (params.trials2[trial] > rth) {
             endShape();
             beginShape();
             vertex(p[0], p[1]);
-            cid = round(Math.random() * (numColors - 1));
+            cid = round(params.trials3[trial] * (numColors - 1));
             R = palettes[pid][cid][0]; //round(Math.random() * 255);
             G = palettes[pid][cid][1]; //round(Math.random() * 255);
             B = palettes[pid][cid][2]; //round(Math.random() * 255);
@@ -139,4 +154,5 @@ function setup() {
     }
 
     endShape();
+    download()
 }
