@@ -1,3 +1,20 @@
+var params;
+var started = false;
+function start(a_params) {
+    params = a_params
+    started = true;
+    setup()
+}
+
+function download() {
+    var download = document.getElementById("download");
+    var image = document.getElementById("mycanvas").toDataURL("image/png");
+    download.download = `ng${params.ng}_sw${params.sw}_pid${params.pid}_sce${params.sce}_seed${params.seed}_nl${params.nl}${params.name}.png`
+    download.setAttribute("href", image);
+    download.click()
+};
+
+
 // Parameters
 // num_grid Name: Finer; slider from 2 to 60. Default: 16
 // num_lines Name: Number of lines: slider from 2 to 7. Default: 3
@@ -10,16 +27,12 @@ function setup() {
     //let t0 = performance.now();
     //for (var trial = 0; trial < 10; trial++) {
 
-    var num_grid = document.getElementById("ngSlider").value;
-    var num_lines = document.getElementById("nlSlider").value;
-    var sw = document.getElementById("swSlider").value;
-    var pid = $("input[name='palette']:checked").val();
-    var sce = $("input[name='ecolor']:checked").val();
-
-    var url_string = window.location.href;
-    var url = new URL(url_string);
-    var seed = url.searchParams.get("seed");
-
+    var num_grid = params.ng
+    var num_lines = params.nl
+    var sw = params.sw
+    var pid = params.pid
+    var sce = params.sce
+    var seed = params.seed
     Math.seedrandom(seed);
 
 
@@ -300,6 +313,7 @@ function setup() {
     //let t1 = performance.now();
     //console.log("Call to doSomething took " + (t1 - t0) + " milliseconds.");
 
+    download()
 
 }
 

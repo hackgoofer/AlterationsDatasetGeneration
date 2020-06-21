@@ -1,3 +1,20 @@
+var params;
+var started = false;
+function start(a_params) {
+    params = a_params
+    started = true;
+    setup()
+}
+
+
+function download() {
+    var download = document.getElementById("download");
+    var image = document.getElementById("mycanvas").toDataURL("image/png");
+    download.download = `ng${params.ng}_rth${params.rth}_seed${params.seed}_sw${params.sw}_pid${params.pid}_dl${params.dl}_c${params.curvy}${params.name}.png`
+    download.setAttribute("href", image);
+    download.click()
+};
+
 // Parameters
 // num_grid Name: Finer; slider from 2 to 60. Default: 16
 // curvy Name: Curvy; slider from 0 to 6. Default: 1
@@ -6,17 +23,16 @@
 // pid Name: Palettes; options: 0 to 4. Default 4
 // drop_largest Name: Incomplete; toggle 0 or 1. Default 0
 function setup() {
+    if (!started) return
 
-    var num_grid = document.getElementById("ngSlider").value;
-    var curvy = document.getElementById("cSlider").value;
-    var rth = document.getElementById("rthSlider").value;
-    var sw = document.getElementById("swSlider").value;
-    var pid = $("input[name='palette']:checked").val();
-    var dl = $("input[name='dl']:checked").val();
+    var num_grid = params.ng
+    var curvy = params.curvy
+    var rth = params.rth
+    var sw = params.sw
+    var pid = params.pid
+    var dl = params.dl
 
-    var url_string = window.location.href;
-    var url = new URL(url_string);
-    var seed = url.searchParams.get("seed");
+    var seed = params.seed
 
     Math.seedrandom(seed);
 
@@ -133,10 +149,10 @@ function setup() {
 
         for (var yi = 0; yi < num_grid; yi++) {
 
-            if (Math.random() > rth) {
+            if (params.ng1[xi * num_grid + yi] > rth) {
                 p1 = [x, y];
                 p2 = [x + th, y + th];
-                if (Math.random() > 0.5) {
+                if (params.ng2[xi * num_grid + yi] > 0.5) {
                     cp = [(p1[0] + p2[0] - nu) / 2, (p1[1] + p2[1] + nu) / 2];
                 } else {
                     cp = [(p1[0] + p2[0] + nu) / 2, (p1[1] + p2[1] - nu) / 2];
@@ -144,7 +160,7 @@ function setup() {
             } else {
                 p1 = [x, y + th];
                 p2 = [x + th, y];
-                if (Math.random() > 0.5) {
+                if (params.ng3[xi * num_grid + yi] > 0.5) {
                     cp = [(p1[0] + p2[0] - nu) / 2, (p1[1] + p2[1] - nu) / 2];
                 } else {
                     cp = [(p1[0] + p2[0] + nu) / 2, (p1[1] + p2[1] + nu) / 2];
@@ -216,8 +232,9 @@ function setup() {
     };
 
     colorsToUse = [];
+    console.log(M)
     for (let c = 1; c <= M; c += 1) {
-        cid = round(Math.random() * (numColors - 1));
+        cid = round(params.M[c] * (numColors - 1));
         colorsToUse[c] = palettes[pid][cid];
         if (c == Lind) {
             if (drop_largest) {
@@ -268,7 +285,7 @@ function setup() {
     //let t1 = performance.now();
     //console.log("Call to doSomething took " + (t1 - t0) + " milliseconds.");
 
-
+    download()
 }
 
 // Original source code: https://github.com/bramp/Connected-component-labelling
