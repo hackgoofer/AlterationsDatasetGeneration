@@ -76,7 +76,6 @@ function download() {
 
 function setup() {
     if (!started) return
-    console.log(`Setup Called for param ${params.name}, started: ${started}`)
 
     var or = 0.7*Number(params.offsetRight);
     var ol = 0.7*Number(params.offsetLeft);
@@ -97,6 +96,7 @@ function setup() {
     var eid = Number(params.edgeColor)
 
     var seed = Number(params.seed)
+    Math.seedrandom(seed);
 
     sy = Math.min(700, screen.width);
     sx = sy; //sy*0.8;
@@ -218,9 +218,9 @@ function setup() {
             // pprev = [x,y];
 
 
-            mux = params.mux[xtrial*grid_height+ytrial]*(mxx-mnx)+mnx;
+            mux = Math.random()*(mxx-mnx)+mnx;
             x = (1-grid_noise)*xclean + grid_noise*(mux);
-            muy = params.muy[xtrial*grid_height+ytrial]*(mxy-mny)+mny;
+            muy = Math.random()*(mxy-mny)+mny;
             y = (1-grid_noise)*yclean + grid_noise*(muy);
             pprev = [x,y - sy*leaf_height/2];
 
@@ -234,7 +234,7 @@ function setup() {
             let cp1 = [];
             let cp2 = [];
 
-            check = params.check[xtrial*grid_height+ytrial];
+            check = Math.random();
             if (check < 0.5) {
                 cp1[0] = (p[0] + pprev[0]) / 2 + ol*sx;
                 cp1[1] = (p[1] + pprev[1]) / 2;
@@ -249,7 +249,7 @@ function setup() {
 
             //cp = [round(Math.random() * s), round(Math.random() * s)];
 
-            if (params.check_drop[xtrial*grid_height+ytrial] > drop) {
+            if (Math.random() > drop) {
                 quadraticVertex(cp1[0], cp1[1], p[0], p[1]);
                 quadraticVertex(cp2[0], cp2[1], pprev[0], pprev[1]);
             }
@@ -269,7 +269,7 @@ function setup() {
 
 
             beginShape();
-            cid = round(params.cids[xtrial*grid_height+ytrial] * (numColors - 1));
+            cid = round(Math.random() * (numColors - 1));
             if (pid < 7) {
                 R = palettes[pid][cid][0]; //round(Math.random() * 255);
                 G = palettes[pid][cid][1]; //round(Math.random() * 255);
@@ -282,16 +282,16 @@ function setup() {
             yclean = yclean + yinc;
             // muy = Math.random()*(sy*(1-2*mp)-(yinc*leaf_height)) + (sy*mp);
             // y = (1-grid_noise)*yclean + grid_noise*(muy);
-            muy = params.muy2[xtrial*grid_height+ytrial]*(mxy-mny)+mny;
+            muy = Math.random()*(mxy-mny)+mny;
             y = (1-grid_noise)*yclean + grid_noise*(muy);
             pprev = [x,y - sy*leaf_height/2];
         }
         xclean = xclean + xinc;
         yclean = ystart;//*(1-leaf_height)/2;
 
-        mux = params.mux_w[xtrial]*(mxx-mnx)+mnx;
+        mux = Math.random()*(mxx-mnx)+mnx;
         x = (1-grid_noise)*xclean + grid_noise*(mux);
-        muy = params.muy_w[xtrial]*(mxy-mny)+mny;
+        muy = Math.random()*(mxy-mny)+mny;
         y = (1-grid_noise)*yclean + grid_noise*(muy);
         pprev = [x,y - sy*leaf_height/2];
     }

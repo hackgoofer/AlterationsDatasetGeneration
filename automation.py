@@ -102,7 +102,6 @@ def get_params_strokes(sw, name_val):
 
 ## Leaves Code
 def get_params_leaves(vc, name_val):
-    static = static_params_leaves()
     dynamic = dynamic_params_leaves()
     seed = random.randint(0, 10000000)
     random.seed(seed)
@@ -114,24 +113,10 @@ def get_params_leaves(vc, name_val):
         step = dynamic[name][2]
         rand = random_number(mmin, mmax, step)
         params[name] = rand
-        if name == "numColumns":
-            gridWidth = rand
-        if name == "numRows":
-            gridHeight = rand
-
-    assert gridWidth != None and gridHeight != None
-
-    dependent = dependent_params_leaves(gridWidth, gridHeight)
-    for name, val in dependent.items():
-        val = int(val)
-        params[name] = [random.random() for _ in range(val)]
 
     params["verticalSize"] = vc
     params["name"] = name_val
     return params
-
-def static_params_leaves():
-    return {'verticalSize': [0.01, 1, 0.01]}
 
 def dynamic_params_leaves():
     return {
@@ -146,18 +131,6 @@ def dynamic_params_leaves():
         "edgeColor": [0, 4, 1],
         "strokeWidth": [0, 6, 0.2],
         "cid": [0, 1, 0.1]
-    }
-
-def dependent_params_leaves(width, height):
-    return {
-        "mux": width*height,
-        "muy": width*height,
-        "check": width*height,
-        "check_drop": width*height,
-        "cids": width*height,
-        "muy2": width*height,
-        "mux_w": width,
-        "muy_w": width
     }
 
 
@@ -192,8 +165,8 @@ time.sleep(10)
 num_rounds = 10
 
 # leaves
-# run_generation("leaves", get_params_leaves, "verticalSize", 0.25, 0.35, num_rounds)
-run_generation("strokes", get_params_strokes, "strokeWidth", 5, 10, num_rounds)
+run_generation("leaves", get_params_leaves, "verticalSize", 0.25, 0.35, num_rounds)
+# run_generation("strokes", get_params_strokes, "strokeWidth", 5, 10, num_rounds)
 # run_generation("spractal", get_params_spractal, "overlap", 0.8, 1, num_rounds)
 # run_generation("tiles_cushions", get_params_tnc, "curvy", 1, 0, num_rounds)
 # run_generation("carpet", get_params_carpet, "nl", 3, 4, num_rounds)
