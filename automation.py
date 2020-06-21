@@ -141,36 +141,36 @@ def run_generation(script_name, fn, variable_name, val1, val2, num_rounds=10):
         params = fn(val1, "_A")
         params_str = json.dumps(params)
         driver.execute_script(f"start({params_str})")
-        time.sleep(2)
+        time.sleep(4)
         driver.refresh()
         time.sleep(2)
         driver.execute_script(f"switch_imports('{script_name}')")
-        time.sleep(2)
+        time.sleep(4)
 
         params[variable_name] = val2
         params["name"] = "_B"
         params_str = json.dumps(params)
         driver.execute_script(f"start({params_str})")
-        time.sleep(2)
+        time.sleep(4)
         driver.refresh()
         time.sleep(2)
         driver.execute_script(f"switch_imports('{script_name}')")
-        time.sleep(2)
+        time.sleep(4)
         print(f"Done {script_name} round {i} of {num_rounds}")
 
 
 driver = webdriver.Chrome("/Users/sash/local/chromedriver")
 driver.get("localhost:8000/generation.html")
 time.sleep(10)
-num_rounds = 10
+num_rounds = 1
 
 # leaves
 run_generation("leaves", get_params_leaves, "verticalSize", 0.25, 0.35, num_rounds)
-# run_generation("strokes", get_params_strokes, "strokeWidth", 5, 10, num_rounds)
-# run_generation("spractal", get_params_spractal, "overlap", 0.8, 1, num_rounds)
-# run_generation("tiles_cushions", get_params_tnc, "curvy", 1, 0, num_rounds)
-# run_generation("carpet", get_params_carpet, "nl", 3, 4, num_rounds)
-# run_generation("circle_packing", get_params_circlepacking, "pid", 1, 4, num_rounds)
+run_generation("strokes", get_params_strokes, "strokeWidth", 5, 10, num_rounds)
+run_generation("spractal", get_params_spractal, "overlap", 0.8, 1, num_rounds)
+run_generation("tiles_cushions", get_params_tnc, "curvy", 1, 0, num_rounds)
+run_generation("carpet", get_params_carpet, "nl", 3, 4, num_rounds)
+run_generation("circle_packing", get_params_circlepacking, "pid", 1, 4, num_rounds)
 
 # params = {}
 # driver.execute_script(f"switch_imports('leaves')")
